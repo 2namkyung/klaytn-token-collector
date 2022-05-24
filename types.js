@@ -21,9 +21,19 @@ export const KIP17_EVENT_TRANSFER_INPUT = [
 export const KIP17_ABI_TOKEN_URI = [
   {
     constant: true,
-    inputs: [{ internalType: "uint256", name: "tokenId", type: "uint256" }],
+    inputs: [
+      {
+        name: "tokenId",
+        type: "uint256",
+      },
+    ],
     name: "tokenURI",
-    outputs: [{ internalType: "string", name: "", type: "string" }],
+    outputs: [
+      {
+        name: "",
+        type: "string",
+      },
+    ],
     payable: false,
     stateMutability: "view",
     type: "function",
