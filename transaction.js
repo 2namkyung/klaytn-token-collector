@@ -6,19 +6,15 @@ export async function decodeKip17TransferLogs(txHash) {
     const receipt = await caver.rpc.klay.getTransactionReceipt(txHash);
     if (receipt.status === "0x1" && receipt.logs.length !== 0) {
       for (const log of receipt.logs) {
-        console.log(
-          "-----------------------------------LOG-----------------------------------"
-        );
-        console.log(log);
-        console.log(
-          "-------------------------------------------------------------------------"
-        );
         const { topics } = log;
         const contract = log.address;
         if (
           topics[0] === KIP17_EVENT_TRANSFER_SIGNATURE &&
           topics.length === 4
         ) {
+          console.log("=================================================");
+          console.log(log);
+          console.log("=================================================");
           const from = caver.abi.decodeParameter("address", topics[1]);
           const to = caver.abi.decodeParameter("address", topics[2]);
           const tokenId = caver.abi.decodeParameter("uint256", topics[3]);
