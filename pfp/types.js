@@ -187,7 +187,20 @@ export const NFT_EVENT_ABI = [
   },
   {
     inputs: [],
-    name: "getBlockNumber",
+    name: "getMintPrice",
+    outputs: [
+      {
+        internalType: "uint256",
+        name: "",
+        type: "uint256",
+      },
+    ],
+    stateMutability: "view",
+    type: "function",
+  },
+  {
+    inputs: [],
+    name: "getStartBlockNumber",
     outputs: [
       {
         internalType: "uint256",
