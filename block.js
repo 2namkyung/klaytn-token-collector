@@ -3,7 +3,7 @@ import { decodeKip17TransferLogs } from "./transaction.js";
 
 export async function getBlock() {
   setInterval(async () => {
-    await caver.rpc.klay.getBlockNumber();
+    await caverSocket.rpc.klay.getBlockNumber();
   }, "59500");
 
   caverSocket.rpc.klay.subscribe("newBlockHeaders", async (error, event) => {
