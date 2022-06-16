@@ -10,7 +10,9 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "axios": "^0.27.2",
     "caver-js": "^1.8.1",
-    "dotenv": "^16.0.1"
+    "dotenv": "^16.0.1",
+    "ipfs-http-client": "^57.0.1"
   }
 }
