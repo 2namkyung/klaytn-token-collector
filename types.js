@@ -39,3 +39,23 @@ export const KIP17_ABI_TOKEN_URI = [
     type: "function",
   },
 ];
+
+export const KIP7_EVENT_TRANSFER_SIGNATURE =
+  "0xddf252ad1be2c89b69c2b068fc378daa952ba7f163c4a11628f55a4df523b3ef";
+export const KIP7_EVENT_TRANSFER_INPUT = [
+  {
+    indexed: true,
+    name: "from",
+    type: "address",
+  },
+  {
+    indexed: true,
+    name: "to",
+    type: "address",
+  },
+  {
+    indexed: false,
+    name: "value",
+    type: "uint256",
+  },
+];
