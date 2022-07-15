@@ -6,7 +6,13 @@ import {
 
 export async function decodeKip17TransferLogs(txHash) {
   try {
-    const receipt = await caver.rpc.klay.getTransactionReceipt(txHash);
+    let receipt = await caver.rpc.klay.getTransactionReceipt(txHash);
+
+    while (receipt === null) {
+      console.log("재시도중...");
+      receipt = await caver.rpc.klay.getTransactionReceipt(txHash);
+    }
+
     if (receipt.status === "0x1" && receipt.logs.length !== 0) {
       for (const log of receipt.logs) {
         const { topics } = log;
@@ -42,6 +48,12 @@ export async function decodeKip17TransferLogs(txHash) {
 export async function decodeKip7TransferLogs(txHash) {
   try {
     const receipt = await caver.rpc.klay.getTransactionReceipt(txHash);
+
+    while (receipt === null) {
+      console.log("재시도중...");
+      receipt = await caver.rpc.klay.getTransactionReceipt(txHash);
+    }
+
     if (receipt.status === "0x1" && receipt.logs.length !== 0) {
       for (const log of receipt.logs) {
         const { topics } = log;

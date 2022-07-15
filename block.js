@@ -18,8 +18,8 @@ export async function getBlock() {
         try {
           const block = await caver.rpc.klay.getBlockByNumber(event.number);
           for (const txHash of block.transactions) {
-            // const eventsLog = await decodeKip17TransferLogs(txHash);
-            const eventsLog = await decodeKip7TransferLogs(txHash);
+            const eventsLog = await decodeKip17TransferLogs(txHash);
+            // const eventsLog = await decodeKip7TransferLogs(txHash);
 
             if (eventsLog) {
               console.log(eventsLog);
