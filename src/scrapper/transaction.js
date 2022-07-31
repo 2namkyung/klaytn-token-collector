@@ -1,15 +1,16 @@
-import caver, { getTokenURI } from "./klaytn-util.js";
+import caver, { getTokenURI } from "../utils/klaytn.js";
 import {
   KIP17_EVENT_TRANSFER_SIGNATURE,
   KIP7_EVENT_TRANSFER_SIGNATURE,
 } from "./types.js";
+import { mint, transfer } from "./updateNfts.js";
 
 export async function decodeKip17TransferLogs(txHash) {
   try {
     let receipt = await caver.rpc.klay.getTransactionReceipt(txHash);
 
     while (receipt === null) {
-      console.log("재시도중...");
+      console.log(`${txHash} : 재시도`);
       receipt = await caver.rpc.klay.getTransactionReceipt(txHash);
     }
 
@@ -17,6 +18,12 @@ export async function decodeKip17TransferLogs(txHash) {
       for (const log of receipt.logs) {
         const { topics } = log;
         const contract = log.address;
+
+        // if (topics[0] !== KIP17_EVENT_TRANSFER_SIGNATURE) {
+        //   console.log(`${txHash} : it is not transaction about NFT`);
+        //   continue;
+        // }
+
         if (
           topics[0] === KIP17_EVENT_TRANSFER_SIGNATURE &&
           topics.length === 4
@@ -26,19 +33,23 @@ export async function decodeKip17TransferLogs(txHash) {
           const tokenId = caver.abi.decodeParameter("uint256", topics[3]);
           const tokenURI = await getTokenURI(contract, tokenId);
 
-          const result = {
+          const nftData = {
             contract,
             from,
             to,
             tokenId,
             tokenURI,
           };
-          console.log("========================NFT=========================");
-          console.log(result);
-          console.log("====================================================");
+
+          if (from === "0x0000000000000000000000000000000000000000") {
+            await mint(nftData);
+          } else {
+            transfer(contract, tokenId, to);
+          }
         }
       }
     }
+
     return false;
   } catch (error) {
     return error;
@@ -47,7 +58,7 @@ export async function decodeKip17TransferLogs(txHash) {
 
 export async function decodeKip7TransferLogs(txHash) {
   try {
-    const receipt = await caver.rpc.klay.getTransactionReceipt(txHash);
+    let receipt = await caver.rpc.klay.getTransactionReceipt(txHash);
 
     while (receipt === null) {
       console.log("재시도중...");
@@ -81,6 +92,7 @@ export async function decodeKip7TransferLogs(txHash) {
       }
     }
   } catch (error) {
+    console.log(`${txHash} ERROR`);
     return error;
   }
 }
